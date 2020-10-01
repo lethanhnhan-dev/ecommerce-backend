@@ -16,16 +16,17 @@ const productRouters = require("./routes/product");
 // App
 const app = express();
 
-// Database
+// Connect to Database
+const db = process.env.DATABASE || "mongodb://127.0.0.1:27017/ecommerce";
 mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("DB connected");
-  });
+	.connect(process.env.DATABASE, {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => {
+		console.log("DB connected");
+	});
 
 // Middleware
 app.use(cors());
@@ -41,12 +42,12 @@ app.use("/api", categoryRoutes);
 app.use("/api", productRouters);
 
 // Disable x-powered-by
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 
 const port = process.env.PORT || 8000;
 
 let server = app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+	console.log(`Server is running on http://localhost:${port}`);
 });
 
 server.timeout = 5000;
